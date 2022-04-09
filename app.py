@@ -1,7 +1,6 @@
 # Aula 15 - REST API parte 1
 from flask import Flask, render_template, request, url_for, redirect, Response
 from models.models import db, Estudante
-from flask_restx import Resource, Api
 import json
 
 app = Flask(__name__, template_folder='templates')
@@ -11,8 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///estudantes.sqlite3'
 @app.route('/')
 @app.route('/list')
 def index():
-    # estudantes = Estudante.query.all()
-    # result = [e.to_dict() for e in estudantes]
     rows = db.session.execute("select id, nome, idade from estudante").fetchall()
     result = [dict(r) for r in rows]
     return Response(response=json.dumps(result), status=200, content_type="application/json")
